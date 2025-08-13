@@ -23,10 +23,13 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.15.0",
     "@slicemachine/manager": "workspace:*",
+    "io-ts": "2.2.20",
+    "io-ts-types": "0.5.19",
     "r19": "0.1.8",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@prismicio/types-internal": "3.11.2",
     "@types/node": "^20.0.0",
     "tsx": "4.6.2",
     "typescript": "4.9.5"
