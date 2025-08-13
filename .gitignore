@@ -50,6 +50,7 @@ coverage/
 unpubTest
 my-test-project
 dist
+build
 *.tgz
 
 .now

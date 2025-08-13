@@ -5,17 +5,17 @@
   "description": "Model Context Protocol (MCP) server for Slice Machine",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "build/index.js",
+  "module": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
-    "dist",
+    "build",
     "src"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx watch src/index.ts",
-    "start": "node dist/index.js",
+    "start": "node build/index.js",
     "types": "tsc --noEmit",
     "lint": "echo 'no lint configured'",
     "inspect": "DANGEROUSLY_OMIT_AUTH=true npx @modelcontextprotocol/inspector tsx src/index.ts"
