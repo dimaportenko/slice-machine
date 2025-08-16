@@ -5,6 +5,7 @@ import {
   createSliceTool,
   addFieldToSliceTool,
   deleteFieldFromSliceTool,
+  updateSliceTool,
 } from "./tools/index.js";
 import { librariesResource } from "./resources/index.js";
 
@@ -56,6 +57,16 @@ export async function createServer(): Promise<McpServer> {
       inputSchema: deleteFieldFromSliceTool.inputSchema.shape,
     },
     deleteFieldFromSliceTool.handler,
+  );
+
+  server.registerTool(
+    updateSliceTool.name,
+    {
+      title: updateSliceTool.title,
+      description: updateSliceTool.description,
+      inputSchema: updateSliceTool.inputSchema.shape,
+    },
+    updateSliceTool.handler,
   );
 
   return server;
