@@ -1,7 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { SERVER_CONFIG } from "./config/constants.js";
-import { createSliceTool, addFieldToSliceTool } from "./tools/index.js";
+import {
+  createSliceTool,
+  addFieldToSliceTool,
+  deleteFieldFromSliceTool,
+} from "./tools/index.js";
 import { librariesResource } from "./resources/index.js";
 
 export async function createServer(): Promise<McpServer> {
@@ -42,6 +46,16 @@ export async function createServer(): Promise<McpServer> {
       inputSchema: addFieldToSliceTool.inputSchema.shape,
     },
     addFieldToSliceTool.handler,
+  );
+
+  server.registerTool(
+    deleteFieldFromSliceTool.name,
+    {
+      title: deleteFieldFromSliceTool.title,
+      description: deleteFieldFromSliceTool.description,
+      inputSchema: deleteFieldFromSliceTool.inputSchema.shape,
+    },
+    deleteFieldFromSliceTool.handler,
   );
 
   return server;
