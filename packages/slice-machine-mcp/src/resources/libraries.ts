@@ -35,19 +35,22 @@ export const librariesResource = {
         ],
       };
     } catch (error) {
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : String(error);
-      
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
       return {
         contents: [
           {
             uri: uri.href,
             mimeType: "application/json",
-            text: JSON.stringify({
-              error: `Failed to fetch libraries: ${errorMessage}`,
-              libraries: [],
-            }, null, 2),
+            text: JSON.stringify(
+              {
+                error: `Failed to fetch libraries: ${errorMessage}`,
+                libraries: [],
+              },
+              null,
+              2,
+            ),
           },
         ],
       };

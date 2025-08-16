@@ -1,6 +1,9 @@
 import type { z } from "zod";
 
-export interface MCPToolDefinition<TSchema extends z.ZodSchema, TInput = z.infer<TSchema>> {
+export interface MCPToolDefinition<
+  TSchema extends z.ZodSchema,
+  TInput = z.infer<TSchema>,
+> {
   name: string;
   title: string;
   description: string;

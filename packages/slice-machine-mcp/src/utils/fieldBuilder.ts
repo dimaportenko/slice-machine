@@ -89,14 +89,14 @@ export function buildFieldConfig(field: FieldDefinition): FieldConfig {
 }
 
 export function buildFieldsConfiguration(
-  fields?: FieldDefinition[]
+  fields?: FieldDefinition[],
 ): Record<string, FieldConfig> {
   if (!fields || fields.length === 0) {
     return {};
   }
 
   const configuration: Record<string, FieldConfig> = {};
-  
+
   for (const field of fields) {
     configuration[field.name] = buildFieldConfig(field);
   }

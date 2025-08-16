@@ -1,4 +1,7 @@
-import { CreateSliceInputSchema, type CreateSliceInput } from "../schemas/slice.js";
+import {
+  CreateSliceInputSchema,
+  type CreateSliceInput,
+} from "../schemas/slice.js";
 import { buildFieldsConfiguration } from "../utils/fieldBuilder.js";
 import { managerClient } from "../services/managerClient.js";
 import { SharedSlice } from "../types.js";
@@ -8,7 +11,13 @@ export const createSliceTool = {
   title: "Create Slice",
   description: "Create a new Prismic slice in a library",
   inputSchema: CreateSliceInputSchema,
-  handler: async ({ libraryID, sliceName, sliceID, description, fields }: CreateSliceInput) => {
+  handler: async ({
+    libraryID,
+    sliceName,
+    sliceID,
+    description,
+    fields,
+  }: CreateSliceInput) => {
     try {
       // Build field configurations
       const primaryFields = buildFieldsConfiguration(fields?.primary);
@@ -35,9 +44,9 @@ export const createSliceTool = {
       };
 
       // Call the manager client to create the slice
-      const { errors } = await managerClient.slices.createSlice({ 
-        libraryID, 
-        model 
+      const { errors } = await managerClient.slices.createSlice({
+        libraryID,
+        model,
       });
 
       if (errors?.length) {
@@ -60,10 +69,9 @@ export const createSliceTool = {
         ],
       };
     } catch (error) {
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : String(error);
-      
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
       return {
         content: [
           {

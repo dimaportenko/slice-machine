@@ -11,7 +11,8 @@ export const MANAGER_CONFIG = {
 export const DEFAULT_FIELD_CONFIG = {
   structuredText: {
     allowTargetBlank: true,
-    multi: "paragraph,preformatted,hyperlink,embed,rtl,strong,em,list-item,o-list-item",
+    multi:
+      "paragraph,preformatted,hyperlink,embed,rtl,strong,em,list-item,o-list-item",
   },
   image: {
     constraint: {},

@@ -32,8 +32,14 @@ export const FieldDefinitionSchema = z.object({
 export type FieldDefinition = z.infer<typeof FieldDefinitionSchema>;
 
 export const SliceFieldsSchema = z.object({
-  primary: z.array(FieldDefinitionSchema).optional().describe("Primary zone fields"),
-  items: z.array(FieldDefinitionSchema).optional().describe("Repeater zone fields"),
+  primary: z
+    .array(FieldDefinitionSchema)
+    .optional()
+    .describe("Primary zone fields"),
+  items: z
+    .array(FieldDefinitionSchema)
+    .optional()
+    .describe("Repeater zone fields"),
 });
 
 export type SliceFields = z.infer<typeof SliceFieldsSchema>;

@@ -3,7 +3,7 @@ import { StateSchema } from "../schemas/slice.js";
 
 export function validateInput<T>(
   schema: z.ZodSchema<T>,
-  input: unknown
+  input: unknown,
 ): { data?: T; error?: string } {
   const result = schema.safeParse(input);
 

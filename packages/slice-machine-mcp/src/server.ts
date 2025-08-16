@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { SERVER_CONFIG } from "./config/constants.js";
-import { createSliceTool } from "./tools/index.js";
+import { createSliceTool, addFieldToSliceTool } from "./tools/index.js";
 import { librariesResource } from "./resources/index.js";
 
 export async function createServer(): Promise<McpServer> {
@@ -20,7 +20,7 @@ export async function createServer(): Promise<McpServer> {
     librariesResource.name,
     librariesResource.template,
     librariesResource.metadata,
-    librariesResource.handler
+    librariesResource.handler,
   );
 
   // Register tools
@@ -31,7 +31,17 @@ export async function createServer(): Promise<McpServer> {
       description: createSliceTool.description,
       inputSchema: createSliceTool.inputSchema.shape,
     },
-    createSliceTool.handler
+    createSliceTool.handler,
+  );
+
+  server.registerTool(
+    addFieldToSliceTool.name,
+    {
+      title: addFieldToSliceTool.title,
+      description: addFieldToSliceTool.description,
+      inputSchema: addFieldToSliceTool.inputSchema.shape,
+    },
+    addFieldToSliceTool.handler,
   );
 
   return server;
@@ -42,9 +52,11 @@ export async function startServer(): Promise<void> {
     const server = await createServer();
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    
+
     // Log to stderr to avoid interfering with stdio communication
-    console.error(`${SERVER_CONFIG.name} v${SERVER_CONFIG.version} - MCP server running`);
+    console.error(
+      `${SERVER_CONFIG.name} v${SERVER_CONFIG.version} - MCP server running`,
+    );
   } catch (error) {
     console.error("Failed to start server:", error);
     process.exit(1);
