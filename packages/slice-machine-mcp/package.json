@@ -1,6 +1,6 @@
 {
   "name": "slice-machine-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Model Context Protocol (MCP) server for Slice Machine",
   "license": "Apache-2.0",
@@ -8,6 +8,9 @@
   "main": "build/index.js",
   "module": "build/index.js",
   "types": "build/index.d.ts",
+  "bin": {
+    "slice-machine-mcp": "build/index.js"
+  },
   "files": [
     "build",
     "src"
