@@ -4,4 +4,5 @@ export * from "./slice.js";
 export * from "./addField.js";
 export * from "./deleteField.js";
 export * from "./updateSlice.js";
+export * from "./addVariant.js";
 export * from "./screenshot.js";

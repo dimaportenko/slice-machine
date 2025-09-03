@@ -6,6 +6,7 @@ import {
   addFieldToSliceTool,
   deleteFieldFromSliceTool,
   updateSliceTool,
+  addVariantToSliceTool,
   updateSliceScreenshotTool,
 } from "./tools/index.js";
 import { librariesResource } from "./resources/index.js";
@@ -68,6 +69,16 @@ export async function createServer(): Promise<McpServer> {
       inputSchema: updateSliceTool.inputSchema.shape,
     },
     updateSliceTool.handler,
+  );
+
+  server.registerTool(
+    addVariantToSliceTool.name,
+    {
+      title: addVariantToSliceTool.title,
+      description: addVariantToSliceTool.description,
+      inputSchema: addVariantToSliceTool.inputSchema.shape,
+    },
+    addVariantToSliceTool.handler,
   );
 
   /* Doesn't work properly, temporary disabled **/
