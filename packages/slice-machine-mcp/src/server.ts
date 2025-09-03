@@ -6,6 +6,7 @@ import {
   addFieldToSliceTool,
   deleteFieldFromSliceTool,
   updateSliceTool,
+  updateSliceScreenshotTool,
 } from "./tools/index.js";
 import { librariesResource } from "./resources/index.js";
 
@@ -67,6 +68,16 @@ export async function createServer(): Promise<McpServer> {
       inputSchema: updateSliceTool.inputSchema.shape,
     },
     updateSliceTool.handler,
+  );
+
+  server.registerTool(
+    updateSliceScreenshotTool.name,
+    {
+      title: updateSliceScreenshotTool.title,
+      description: updateSliceScreenshotTool.description,
+      inputSchema: updateSliceScreenshotTool.inputSchema.shape,
+    },
+    updateSliceScreenshotTool.handler,
   );
 
   return server;
