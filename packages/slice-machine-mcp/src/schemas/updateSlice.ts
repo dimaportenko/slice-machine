@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { FieldTypeSchema } from "./field.js";
-import { SliceIDSchema } from "./slice.js";
+import { SliceIDSchema, VariationIDSchema } from "./common.js";
 import { SliceZoneSchema } from "./addField.js";
 
 // Define operation types
@@ -84,6 +84,7 @@ export const UpdateSliceInputSchema = z.object({
     .min(1)
     .describe("Library path (e.g., './src/slices')"),
   sliceID: SliceIDSchema.describe("Snake_case slice ID"),
+  variationID: VariationIDSchema.optional().default("default").describe("Variation ID to update (defaults to 'default')"),
   operations: z
     .array(FieldOperationSchema)
     .min(1)

@@ -64,7 +64,12 @@ npm run start-slicemachine
 npm run build
 ```
 
-3. Configure your AI assistant to use this MCP server.
+3. Global install the MCP server:
+```bash
+npm install -g .
+```
+
+4. Configure your AI assistant to use this MCP server.
 
 ### Claude Desktop Configuration
 

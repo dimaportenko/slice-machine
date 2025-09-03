@@ -14,6 +14,7 @@ export const deleteFieldFromSliceTool = {
   handler: async ({
     libraryID,
     sliceID,
+    variationID,
     zone,
     fieldName,
   }: DeleteFieldInput) => {
@@ -52,27 +53,33 @@ export const deleteFieldFromSliceTool = {
         JSON.stringify(existingSlice),
       );
 
-      // Get the default variation
-      const defaultVariation = updatedSlice.variations[0];
-      if (!defaultVariation) {
+      // Find the specified variation
+      const targetVariation = updatedSlice.variations.find(
+        (variation: any) => variation.id === variationID
+      );
+      
+      if (!targetVariation) {
+        const availableVariations = updatedSlice.variations
+          .map((v: any) => v.id)
+          .join(", ");
         return {
           content: [
             {
               type: "text" as const,
-              text: `No default variation found for slice "${sliceID}"`,
+              text: `Variation "${variationID}" not found in slice "${sliceID}". Available variations: ${availableVariations}`,
             },
           ],
         };
       }
 
       // Check if field exists in the target zone
-      const targetZone = defaultVariation[zone] || {};
+      const targetZone = targetVariation[zone] || {};
       if (!targetZone[fieldName]) {
         return {
           content: [
             {
               type: "text" as const,
-              text: `Field "${fieldName}" does not exist in ${zone} zone of slice "${sliceID}"`,
+              text: `Field "${fieldName}" does not exist in ${zone} zone of variation "${variationID}" in slice "${sliceID}"`,
             },
           ],
         };
@@ -82,7 +89,7 @@ export const deleteFieldFromSliceTool = {
       const { [fieldName]: deletedField, ...remainingFields } = targetZone;
 
       // Update the variation with the field removed
-      defaultVariation[zone] = remainingFields as any;
+      targetVariation[zone] = remainingFields as any;
 
       // Update the slice using the manager client
       const { errors: updateErrors } = await managerClient.slices.updateSlice({
@@ -105,7 +112,7 @@ export const deleteFieldFromSliceTool = {
         content: [
           {
             type: "text" as const,
-            text: `✅ Successfully deleted field "${fieldName}" from ${zone} zone of slice "${sliceID}" in library ${libraryID}`,
+            text: `✅ Successfully deleted field "${fieldName}" from ${zone} zone of variation "${variationID}" in slice "${sliceID}" in library ${libraryID}`,
           },
         ],
       };

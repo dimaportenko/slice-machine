@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { FieldTypeSchema } from "./field.js";
-import { SliceIDSchema } from "./slice.js";
+import { SliceIDSchema, VariationIDSchema } from "./common.js";
 
 export const SliceZoneSchema = z.enum(["primary", "items"]);
 
@@ -9,6 +9,7 @@ export type SliceZone = z.infer<typeof SliceZoneSchema>;
 export const AddFieldInputSchema = z.object({
   libraryID: z.string().min(1).describe("Library path (e.g., './src/slices')"),
   sliceID: SliceIDSchema.describe("Snake_case slice ID"),
+  variationID: VariationIDSchema.optional().default("default").describe("Variation ID to add field to (defaults to 'default')"),
   zone: SliceZoneSchema.describe(
     "Zone where to add the field (primary or items)",
   ),

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SliceIDSchema } from "./slice.js";
+import { SliceIDSchema, VariationIDSchema } from "./common.js";
 import { SliceZoneSchema } from "./addField.js";
 
 export const DeleteFieldInputSchema = z.object({
@@ -8,6 +8,7 @@ export const DeleteFieldInputSchema = z.object({
     .min(1)
     .describe("Library path (e.g., './src/slices')"),
   sliceID: SliceIDSchema.describe("Snake_case slice ID"),
+  variationID: VariationIDSchema.optional().default("default").describe("Variation ID to delete field from (defaults to 'default')"),
   zone: SliceZoneSchema.describe(
     "Zone where to delete the field (primary or items)",
   ),

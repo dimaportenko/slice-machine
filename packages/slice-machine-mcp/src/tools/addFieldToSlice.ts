@@ -16,6 +16,7 @@ export const addFieldToSliceTool = {
   handler: async ({
     libraryID,
     sliceID,
+    variationID,
     zone,
     fieldName,
     fieldType,
@@ -69,27 +70,33 @@ export const addFieldToSliceTool = {
         JSON.stringify(existingSlice),
       );
 
-      // Add the field to the specified zone in the default variation
-      const defaultVariation = updatedSlice.variations[0];
-      if (!defaultVariation) {
+      // Find the specified variation
+      const targetVariation = updatedSlice.variations.find(
+        (variation: any) => variation.id === variationID
+      );
+      
+      if (!targetVariation) {
+        const availableVariations = updatedSlice.variations
+          .map((v: any) => v.id)
+          .join(", ");
         return {
           content: [
             {
               type: "text" as const,
-              text: `No default variation found for slice "${sliceID}"`,
+              text: `Variation "${variationID}" not found in slice "${sliceID}". Available variations: ${availableVariations}`,
             },
           ],
         };
       }
 
       // Check if field already exists in the target zone
-      const targetZone = defaultVariation[zone] || {};
+      const targetZone = targetVariation[zone] || {};
       if (targetZone[fieldName]) {
         return {
           content: [
             {
               type: "text" as const,
-              text: `Field "${fieldName}" already exists in ${zone} zone of slice "${sliceID}"`,
+              text: `Field "${fieldName}" already exists in ${zone} zone of variation "${variationID}" in slice "${sliceID}"`,
             },
           ],
         };
@@ -109,7 +116,7 @@ export const addFieldToSliceTool = {
       };
 
       // Update the variation with the new field
-      defaultVariation[zone] = updatedZone;
+      targetVariation[zone] = updatedZone;
 
       // Update the slice using the manager client
       const { errors: updateErrors } = await managerClient.slices.updateSlice({
@@ -132,7 +139,7 @@ export const addFieldToSliceTool = {
         content: [
           {
             type: "text" as const,
-            text: `✅ Successfully added field "${fieldName}" (${fieldType}) to ${zone} zone of slice "${sliceID}" in library ${libraryID}`,
+            text: `✅ Successfully added field "${fieldName}" (${fieldType}) to ${zone} zone of variation "${variationID}" in slice "${sliceID}" in library ${libraryID}`,
           },
         ],
       };

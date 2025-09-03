@@ -19,6 +19,7 @@ export const updateSliceTool = {
   handler: async ({
     libraryID,
     sliceID,
+    variationID,
     operations,
     transactional,
   }: UpdateSliceInput) => {
@@ -52,14 +53,20 @@ export const updateSliceTool = {
         };
       }
 
-      // Get default variation
-      const defaultVariation = existingSlice.variations[0];
-      if (!defaultVariation) {
+      // Find the specified variation
+      const targetVariation = existingSlice.variations.find(
+        (variation: any) => variation.id === variationID
+      );
+      
+      if (!targetVariation) {
+        const availableVariations = existingSlice.variations
+          .map((v: any) => v.id)
+          .join(", ");
         return {
           content: [
             {
               type: "text" as const,
-              text: `No default variation found for slice "${sliceID}"`,
+              text: `Variation "${variationID}" not found in slice "${sliceID}". Available variations: ${availableVariations}`,
             },
           ],
         };
@@ -87,7 +94,20 @@ export const updateSliceTool = {
       const updatedSlice: SharedSlice = JSON.parse(
         JSON.stringify(existingSlice),
       );
-      const updatedVariation = updatedSlice.variations[0];
+      const updatedVariation = updatedSlice.variations.find(
+        (variation: any) => variation.id === variationID
+      );
+      
+      if (!updatedVariation) {
+        return {
+          content: [
+            {
+              type: "text" as const,
+              text: `❌ Variation "${variationID}" not found in cloned slice "${sliceID}"`,
+            },
+          ],
+        };
+      }
 
       // Track operation results
       const operationResults: OperationResult[] = [];
@@ -326,7 +346,7 @@ export const updateSliceTool = {
       const failedOps = operationResults.filter(r => !r.success);
 
       const resultSummary = [
-        `✅ Successfully applied ${appliedOperations}/${operations.length} operations to slice "${sliceID}"`,
+        `✅ Successfully applied ${appliedOperations}/${operations.length} operations to variation "${variationID}" of slice "${sliceID}"`,
         "",
         ...successfulOps.map(r => `  ✓ ${r.operation} "${r.fieldName}" in ${r.zone} zone`),
       ];

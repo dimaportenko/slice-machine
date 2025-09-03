@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { SliceFieldsSchema } from "./field.js";
+import { SliceIDSchema, VariationIDSchema } from "./common.js";
 
-export const SliceIDSchema = z
-  .string()
-  .regex(
-    /^[a-z][a-z0-9_]*$/,
-    "Slice ID must be snake_case (e.g., hero_section)",
-  );
+export const SliceVariationSchema = z.object({
+  id: VariationIDSchema.describe("Variation ID (e.g., 'default', 'with_background')"),
+  name: z.string().describe("Human-readable variation name"),
+  description: z.string().optional().describe("Variation description"),
+  fields: SliceFieldsSchema.optional().describe(
+    "Field configuration for primary and items zones for this variation",
+  ),
+});
 
 export const CreateSliceInputSchema = z.object({
   libraryID: z.string().min(1).describe("Library path (e.g., './src/slices')"),
@@ -14,7 +17,10 @@ export const CreateSliceInputSchema = z.object({
   sliceID: SliceIDSchema.describe("Snake_case slice ID"),
   description: z.string().optional().describe("Slice description"),
   fields: SliceFieldsSchema.optional().describe(
-    "Field configuration for primary and items zones",
+    "Field configuration for primary and items zones for default variation",
+  ),
+  variations: z.array(SliceVariationSchema).optional().describe(
+    "Array of variations to create (if not provided, only 'default' variation will be created)",
   ),
 });
 

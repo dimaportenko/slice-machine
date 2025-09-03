@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SliceIDSchema } from "./slice.js";
+import { SliceIDSchema, VariationIDSchema } from "./common.js";
 
 // Schema for base64 encoded image data
 export const Base64ImageSchema = z
@@ -7,14 +7,6 @@ export const Base64ImageSchema = z
   .regex(
     /^data:image\/(png|jpeg|jpg|gif|webp);base64,/,
     "Image must be a base64-encoded data URL (e.g., data:image/png;base64,...)",
-  );
-
-// Schema for variation ID
-export const VariationIDSchema = z
-  .string()
-  .regex(
-    /^[a-z][a-z0-9_]*$/,
-    "Variation ID must be snake_case (e.g., default, variation_name)",
   );
 
 // Main schema for updating screenshot

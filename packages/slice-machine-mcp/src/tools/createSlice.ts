@@ -17,19 +17,35 @@ export const createSliceTool = {
     sliceID,
     description,
     fields,
+    variations,
   }: CreateSliceInput) => {
     try {
-      // Build field configurations
-      const primaryFields = buildFieldsConfiguration(fields?.primary);
-      const itemsFields = buildFieldsConfiguration(fields?.items);
-
-      // Create the slice model
-      const model: SharedSlice = {
-        id: sliceID,
-        type: "SharedSlice",
-        name: sliceName,
-        description: description || sliceName,
-        variations: [
+      // Build variations array
+      let variationsToCreate: any[] = [];
+      
+      if (variations && variations.length > 0) {
+        // Use provided variations
+        variationsToCreate = variations.map((variation) => {
+          const varPrimaryFields = buildFieldsConfiguration(variation.fields?.primary);
+          const varItemsFields = buildFieldsConfiguration(variation.fields?.items);
+          
+          return {
+            id: variation.id,
+            name: variation.name,
+            description: variation.description || variation.name,
+            docURL: "...",
+            version: "initial",
+            imageUrl: "",
+            primary: varPrimaryFields as any,
+            items: varItemsFields as any,
+          };
+        });
+      } else {
+        // Create default variation with provided fields or empty fields
+        const primaryFields = buildFieldsConfiguration(fields?.primary);
+        const itemsFields = buildFieldsConfiguration(fields?.items);
+        
+        variationsToCreate = [
           {
             id: "default",
             name: "Default",
@@ -40,7 +56,16 @@ export const createSliceTool = {
             primary: primaryFields as any,
             items: itemsFields as any,
           },
-        ],
+        ];
+      }
+
+      // Create the slice model
+      const model: SharedSlice = {
+        id: sliceID,
+        type: "SharedSlice",
+        name: sliceName,
+        description: description || sliceName,
+        variations: variationsToCreate,
       };
 
       // Call the manager client to create the slice
@@ -60,11 +85,13 @@ export const createSliceTool = {
         };
       }
 
+      const variationNames = variationsToCreate.map(v => v.name).join(", ");
+      
       return {
         content: [
           {
             type: "text" as const,
-            text: `✅ Successfully created slice "${sliceID}" in library ${libraryID}`,
+            text: `✅ Successfully created slice "${sliceID}" in library ${libraryID} with ${variationsToCreate.length} variation(s): ${variationNames}`,
           },
         ],
       };

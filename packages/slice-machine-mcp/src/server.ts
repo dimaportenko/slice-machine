@@ -70,15 +70,17 @@ export async function createServer(): Promise<McpServer> {
     updateSliceTool.handler,
   );
 
-  server.registerTool(
-    updateSliceScreenshotTool.name,
-    {
-      title: updateSliceScreenshotTool.title,
-      description: updateSliceScreenshotTool.description,
-      inputSchema: updateSliceScreenshotTool.inputSchema.shape,
-    },
-    updateSliceScreenshotTool.handler,
-  );
+  /* Doesn't work properly, temporary disabled **/
+
+  // server.registerTool(
+  //   updateSliceScreenshotTool.name,
+  //   {
+  //     title: updateSliceScreenshotTool.title,
+  //     description: updateSliceScreenshotTool.description,
+  //     inputSchema: updateSliceScreenshotTool.inputSchema.shape,
+  //   },
+  //   updateSliceScreenshotTool.handler,
+  // );
 
   return server;
 }
