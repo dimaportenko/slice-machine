@@ -1,6 +1,6 @@
 {
   "name": "slice-machine-mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Model Context Protocol (MCP) server for Slice Machine",
   "license": "Apache-2.0",

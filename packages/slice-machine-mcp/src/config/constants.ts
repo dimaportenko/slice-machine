@@ -1,7 +1,9 @@
+import { PACKAGE_INFO } from "./version.js";
+
 export const SERVER_CONFIG = {
-  name: "slice-machine-mcp",
-  version: "0.2.0",
-  description: "Model Context Protocol server for Slice Machine",
+  name: PACKAGE_INFO.name,
+  version: PACKAGE_INFO.version,
+  description: PACKAGE_INFO.description,
 } as const;
 
 export const MANAGER_CONFIG = {
